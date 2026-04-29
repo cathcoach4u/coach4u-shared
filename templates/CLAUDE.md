@@ -1,5 +1,6 @@
 # [App Name] — Claude Code Guide
 
+> Template: https://github.com/cathcoach4u/coach4u-shared/blob/main/templates/CLAUDE.md
 > Shared design system: https://github.com/cathcoach4u/coach4u-shared
 > Full setup guide: https://github.com/cathcoach4u/coach4u-shared/blob/main/SETUP.md
 
