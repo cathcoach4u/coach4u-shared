@@ -33,6 +33,12 @@
 /* ----- Reset & Base ----- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/*
+  IMPORTANT: Do NOT add display:flex or flex-direction:column to body.
+  Auth pages (login, forgot-password, reset-password) use their own
+  body layout to centre the card. Adding flex-direction:column here
+  will break those pages. Each app adds its own layout styles as needed.
+*/
 body {
   font-family: var(--font);
   background: var(--bg);
