@@ -1,33 +1,31 @@
 # coach4u-shared
 
-Shared design system, stylesheet, and configuration for all Coach4U apps.
+Source of truth for all Coach4U templates. Copy what you need into each app repo.
 
-Hosted via GitHub Pages at:
-```
-https://cathcoach4u.github.io/coach4u-shared/
-```
+## How to use
 
-## Files
+Browse `templates/` and copy the files you need into your app repo. Each folder is self-contained.
 
-| File | Purpose |
-|------|---------|
-| `css/style.css` | Shared stylesheet (CSS variables, components, responsive breakpoints) |
-| `js/config.js` | Supabase URL + anon key exports |
-| `SETUP.md` | Full setup guide: auth, membership gating, PWA, SQL snippets |
+| Folder | What you get |
+|--------|-------------|
+| `templates/CLAUDE.md` | Claude Code guide for a new app repo |
+| `templates/PROFILE.md` | Cath's profile and working preferences |
+| `templates/css/` | Shared stylesheet — copy into app as `css/style.css` |
+| `templates/js/` | Supabase config reference |
+| `templates/auth/` | Login, forgot password, reset password, inactive pages |
+| `templates/snippets/` | Supabase init block, header + sign out, membership gate |
+| `templates/supabase/` | Database schema SQL and add-member snippet |
+| `templates/pwa/` | manifest.json and service worker |
 
-## How to Link the Shared CSS
+## Rules
 
-Add this to the `<head>` of every Coach4U HTML page:
-
-```html
-<link rel="stylesheet" href="https://cathcoach4u.github.io/coach4u-shared/css/style.css">
-```
-
-That's it. No build step required — changes to this repo are live immediately after GitHub Pages rebuilds (usually under 60 seconds).
+- **This repo is the source of truth.** Update templates here first, then copy into apps.
+- **Do not link to this repo's CSS as a live CDN.** Copy the file into each app instead.
+- **Do not link to `js/config.js` from external apps.** Supabase must always be initialised inline — see `templates/snippets/supabase-init.html`.
 
 ## Supabase Project
 
-- **URL:** `https://eekefsuaefgpqmjdyniy.supabase.co`
-- **Anon Key:** `sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y`
-
-> See [SETUP.md](SETUP.md) for the full development guide including login page patterns, forgot/reset password flows, membership gating, and PWA setup.
+| | |
+|---|---|
+| URL | `https://eekefsuaefgpqmjdyniy.supabase.co` |
+| Anon Key | `sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y` |
