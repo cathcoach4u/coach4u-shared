@@ -48,7 +48,7 @@ If only this repo is open, follow the rules and patterns documented in this file
 
 ## Critical Rules
 
-**Supabase init — always inline.** GitHub Pages does not reliably load external `.js` modules. Always initialise Supabase inline in a `<script type="module">` block. Never import from an external config file. See `coach4u-shared/templates/snippets/supabase-init.html`.
+**Supabase init — always inline.** GitHub Pages does not reliably load external `.js` modules. Always initialise Supabase inline in a `<script>` block. Never import from an external config file. See `coach4u-shared/templates/snippets/supabase-init.html`.
 
 **Reset password redirect.** Use `window.location.href` (not `window.location.origin`) when building the `redirectTo` URL. Using `origin` drops the path and breaks Supabase's redirect matching.
 
@@ -61,12 +61,13 @@ If only this repo is open, follow the rules and patterns documented in this file
 ## What to copy from `coach4u-shared/templates/`
 
 | Need | Copy this |
-|------|-----------|
+|------|----------|
 | Stylesheet | `css/style.css` → into this repo as `css/style.css` |
 | Sign in page | `auth/login.html` |
 | Forgot password page | `auth/forgot-password.html` |
 | Reset password page | `auth/reset-password.html` |
 | Membership inactive page | `auth/inactive.html` |
+| **App dashboard** | `snippets/app-dashboard.html` |
 | Inline Supabase init block | `snippets/supabase-init.html` |
 | Header with Sign Out button | `snippets/header-signout.html` |
 | Membership gate logic | `snippets/membership-gate.js` |
@@ -76,6 +77,80 @@ If only this repo is open, follow the rules and patterns documented in this file
 | Service worker | `pwa/sw.js` |
 
 After copying, replace `[App Name]`, `[Page Name]` and any other placeholders with this app's values.
+
+---
+
+## Dashboard Pattern
+
+**Every Coach4U app uses the same dashboard layout.** Do not invent a different structure.
+
+Copy the full pattern from `coach4u-shared/templates/snippets/app-dashboard.html`.
+
+### Structure (in order)
+
+1. **Membership card** — gradient navy panel at top. Shows member name, email, Active Member badge, expiry date. Populated from Supabase `users` table.
+2. **Section header** — "Your Tools" label + tool count on the right.
+3. **App grid** — 2-column card grid. Drops to 1 column on mobile (≤480px).
+4. **App cards** — one card per feature/page. Each card has: emoji icon, title, description, teal Open button.
+
+### CSS classes
+
+```
+.membership-card        — gradient navy hero panel
+.member-name            — member full name
+.member-email           — member email
+.membership-badge       — "Active Member" pill
+.membership-expires     — expiry date line
+.app-section-header     — flex row: title + count
+.app-section-title      — "Your Tools" label
+.app-section-count      — "N available" count
+.app-grid               — 2-col CSS grid
+.app-card               — teal-bordered card tile
+.app-card-icon          — 52px rounded emoji container
+.app-card-title         — 15px bold navy title
+.app-card-desc          — 13px muted description (flex:1)
+.btn.btn-primary        — teal Open button
+```
+
+### Rules
+
+- **Always use emoji** for card icons. Keep them as text, not images.
+- **Descriptions can be dynamic** — update via JS (e.g. show last Brain Pulse score from Supabase).
+- **Odd card counts are fine** — the last card spans full width on 1-col mobile.
+- **Every app has an Account card** — link to `account.html` for profile and membership details.
+- **Do not change the card border or shadow** — teal `2px solid var(--accent)` with teal shadow and hover lift is the standard.
+
+### Minimal example
+
+```html
+<div class="membership-card">
+  <div class="member-name" id="memberName">—</div>
+  <div class="member-email" id="memberEmail">—</div>
+  <span class="membership-badge">Active Member</span>
+  <div class="membership-expires">Expires: <span id="expiryDate">—</span></div>
+</div>
+
+<div class="app-section-header">
+  <span class="app-section-title">Your Tools</span>
+  <span class="app-section-count">2 available</span>
+</div>
+
+<div class="app-grid">
+  <div class="app-card">
+    <div class="app-card-icon">🧠</div>
+    <div class="app-card-title">Brain Pulse</div>
+    <div class="app-card-desc">Check in with your four wellbeing pillars</div>
+    <a href="brain-pulse.html" class="btn btn-primary">Open</a>
+  </div>
+
+  <div class="app-card">
+    <div class="app-card-icon">⚙️</div>
+    <div class="app-card-title">Account</div>
+    <div class="app-card-desc">Your profile and membership details</div>
+    <a href="account.html" class="btn btn-primary">Open</a>
+  </div>
+</div>
+```
 
 ---
 
