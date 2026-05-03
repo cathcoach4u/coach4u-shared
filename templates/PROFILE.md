@@ -30,6 +30,7 @@ I work mostly online via Microsoft Teams. ADHD brain — I want structure but AD
 - **Short paragraphs.** Easy to scan. Direct and practical.
 - **Strengths-based, not clinical.** Warm, professional, clear.
 - **Never refer to Coach4U as a psychology practice.**
+- **Match the agent to the task.** Use the simplest capable agent. Don't default to the most powerful or complex agent for small, simple tasks.
 
 ---
 
