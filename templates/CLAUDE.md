@@ -1,10 +1,33 @@
 # [App Name] — Claude Code Guide
 
-> Templates and source of truth: https://github.com/cathcoach4u/coach4u-shared
-> Profile and working preferences: `coach4u-shared/templates/PROFILE.md`
->
-> **Rule:** Always check `coach4u-shared/templates/` first. Copy the relevant
-> file into this repo rather than rewriting it from scratch.
+> ## CLAUDE.md is the source of truth.
+> Read this file first in every session. All rules and references live here.
+> Do not invent patterns or copy from other apps. If a rule isn't here, ask.
+
+---
+
+## Linking with `coach4u-shared`
+
+This app uses templates from the shared repo: https://github.com/cathcoach4u/coach4u-shared
+
+When both this repo and `coach4u-shared` are open in the same Claude session:
+
+1. **Always check `coach4u-shared/templates/` first** before writing anything new.
+2. **Copy** the relevant template into this repo. Do not link to the shared repo as a live source — each app owns its own local copy.
+3. **Profile and brand rules** live in `coach4u-shared/templates/PROFILE.md`. Treat that as authoritative for fonts, colours, tone, and working preferences.
+4. **If you change a pattern** that should apply to all apps, update it in `coach4u-shared/templates/` first, then propagate.
+
+If only this repo is open, follow the rules and patterns documented in this file.
+
+---
+
+## Workflow Rules
+
+- **Commit every change.** One change = one commit + push. No batched commits.
+- **Push to the working branch immediately** after each commit.
+- **Merge to `main` when work is complete.** `main` always reflects the finished, current state.
+- **At session start, confirm `main` is up to date** before starting new work.
+- **Never leave uncommitted changes at end of session.**
 
 ---
 
