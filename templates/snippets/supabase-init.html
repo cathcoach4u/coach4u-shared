@@ -1,14 +1,16 @@
 <!--
-  SUPABASE INIT SNIPPET
-  ---------------------
+  SUPABASE INIT — ESM INLINE PATTERN
+  ------------------------------------
   Copy this <script> block into every HTML page that needs Supabase.
   Place it just before </body>.
 
-  RULE: Always initialise inline like this. Never import from an external
-  config file — GitHub Pages does not reliably load external .js modules.
+  RULES:
+  - Always use <script type="module"> with the ESM import. Never use the UMD bundle (supabase.min.js).
+  - Always initialise inline. Never import from an external config file.
+  - Any function called from an inline onclick must be on window:
+      window.funcName = function() { ... }
 
-  Add your page logic inside the same <script type="module"> block,
-  below the supabase = createClient(...) line.
+  Add all page logic inside this same script block, below the createClient() line.
 -->
 
 <script type="module">
@@ -17,7 +19,7 @@
   const SUPABASE_URL      = 'https://eekefsuaefgpqmjdyniy.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y';
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // --- your page logic goes here ---
 
