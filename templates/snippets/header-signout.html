@@ -1,33 +1,32 @@
 <!--
   HEADER + SIGN OUT SNIPPET
   --------------------------
-  Copy this block into every app page (not auth pages).
-  Sign Out is always top-right of the header.
+  Copy this block into every authenticated page (not auth pages).
+  Sign Out is always top-right of the header — never moves on mobile.
 
   - On the dashboard: remove the "← Back" link.
-  - On all other pages: keep it and update href and the label.
+  - On all other pages: keep the back link and update its href.
   - Update [Page Name] for each page.
+  - Update [X.Y] in the JS below with the app version number.
 
-  Requires: Supabase initialised inline on the same page (see supabase-init.html).
-  Requires: css/style.css linked in <head>.
+  In your <script type="module"> block, expose signOut and set the version:
+
+    window.signOut = async function() {
+      await sb.auth.signOut();
+      window.location.href = 'index.html';
+    };
+
+    document.getElementById('headerVersion').textContent =
+      'v[X.Y] — ' + new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
 -->
 
 <header class="site-header">
   <div class="header-inner">
     <div class="header-left">
-      <a href="index.html" class="header-back">← Back</a>  <!-- remove on dashboard -->
+      <a href="dashboard.html" class="header-back">← Back</a>  <!-- remove on dashboard -->
       <span class="header-title">[Page Name]</span>
+      <span class="header-version" id="headerVersion"></span>
     </div>
-    <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+    <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
   </div>
 </header>
-
-<!--
-  Add this inside your existing <script type="module"> block
-  (do not create a second module script — add it to the one with supabase init):
-
-  document.getElementById('signOutBtn').addEventListener('click', async () => {
-    await supabase.auth.signOut();
-    window.location.href = 'login.html';
-  });
--->

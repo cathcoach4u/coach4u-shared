@@ -1,23 +1,23 @@
 // MEMBERSHIP GATE SNIPPET
 // -----------------------
 // Paste this inside your <script type="module"> block on every
-// page that requires an active membership (i.e. every page except
-// login.html, forgot-password.html, reset-password.html, inactive.html).
+// page that requires an active membership (every page except
+// index.html, forgot-password.html, reset-password.html, inactive.html).
 //
 // Place it at the top of your page logic, before any data fetching.
-// Requires: supabase already initialised (see supabase-init.html).
+// Requires: sb already initialised (see supabase-init.html).
 
-const { data: { session } } = await supabase.auth.getSession();
+const { data: { user }, error: authErr } = await sb.auth.getUser();
 
-if (!session) {
-  window.location.href = 'login.html';
+if (authErr || !user) {
+  window.location.href = 'index.html';
   throw new Error('No session');
 }
 
-const { data: profile } = await supabase
+const { data: profile } = await sb
   .from('users')
   .select('membership_status')
-  .eq('id', session.user.id)
+  .eq('id', user.id)
   .single();
 
 if (profile?.membership_status !== 'active') {
