@@ -37,26 +37,27 @@ I work mostly online via Microsoft Teams. ADHD brain — I want structure but AD
 ## Brand Lock
 
 ### Fonts
-- Headings: Inter Bold
-- Body and footer: Montserrat Regular
-- Web fallback: sans-serif
+- All text: Aptos (Microsoft system font)
+- Web fallback stack: `-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
+- No Google Fonts required or used.
 
 ### Font sizes
-- Title: 2rem
-- Section heading: 12pt
-- Body: 1.1rem
-- Footer: 9pt
+- Page title / main heading: 28px, weight 700
+- Section heading: 13px uppercase, letter-spacing 0.8px
+- Body: 13–14px
+- Footer: 14px
 
 ### Colours
-- `#1B3664` — headings and titles
-- `#5684C4` — accents only, never body text
-- `#2D2D2D` — body text
-- `#DDDDDD` — dividers and subtle backgrounds only
-- Background: white
-- Do NOT introduce black, alternate blues, or additional greys.
+- `#003366` — primary navy: headings, titles, header background
+- `#0D9488` — teal: accent colour, card borders, buttons, links, section heading underlines
+- `#333333` — body text
+- `#888888` — muted / secondary UI text
+- `#eeeeee` — dividers
+- Background: white (`#ffffff`)
+- Do NOT introduce black, additional blues, alternate teals, or extra greys.
 
-### Footer (exact text, centred, Montserrat 9pt, #2D2D2D)
-Strengths-Based Coaching and Counselling | [www.coach4u.com.au](http://www.coach4u.com.au) | [cath@coach4u.com.au](mailto:cath@coach4u.com.au) | 0402 313 337
+### Footer (exact text, centred, 14px, #999)
+Strengths-Based Coaching and Counselling | [coach4u.com.au](https://coach4u.com.au)
 
 ---
 
@@ -67,11 +68,16 @@ Strengths-Based Coaching and Counselling | [www.coach4u.com.au](http://www.coach
 - No external dependencies or Google Fonts unless explicitly requested.
 
 ### Standalone HTML / GitHub Pages
-- CSS variables fine. Google Fonts via link fine.
+- No Google Fonts — use the Aptos system font stack.
+- Use `css/style.css` from `coach4u-shared/templates/css/` as the shared stylesheet.
+- CSS variables preferred. Inline styles acceptable for one-off pages.
 - Mobile-first, semantic HTML.
-- Inter Bold headings, Montserrat Regular body, sans-serif fallback.
-- Buttons: dark blue primary, white-with-border secondary.
-- Transitions: 0.15s–0.25s. Border radius: 8px / 12px / 16px.
+- Buttons: teal (`.btn-primary`) for primary actions, navy (`.btn-navy`) for secondary/structural actions.
+- Transitions: 0.2s–0.3s. Border radius: 6px / 10px / 12px.
+- Cards: `2px solid #0D9488` border with teal box-shadow. Use `.card-neutral` for admin/structural panels.
+- Header: navy background (`#003366`), white text, Sign Out top-right on every app page.
+- Gradient panels (about/summary): `linear-gradient(135deg, #003366 0%, #0D9488 100%)`.
+- Section headings: 13px uppercase, `border-bottom: 2px solid #0D9488`.
 - Selected states: clear visual change plus tick mark for multi-select.
 
 ---
