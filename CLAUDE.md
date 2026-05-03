@@ -23,6 +23,25 @@
 - `SETUP.md` — canonical reference for auth, membership gating, PWA, and SQL patterns
 - This repo has no auth, no live pages, and no Supabase queries
 
+## What's in `templates/`
+
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` | Drop-in Claude guide for a new app repo |
+| `PROFILE.md` | Cath's profile, brand standards, working preferences |
+| `css/style.css` | Shared stylesheet (copy into app as `css/style.css`) |
+| `auth/login.html` | Sign in page |
+| `auth/forgot-password.html` | Request reset link |
+| `auth/reset-password.html` | Set new password |
+| `auth/inactive.html` | Membership inactive landing page |
+| `snippets/supabase-init.html` | Inline Supabase init block |
+| `snippets/header-signout.html` | Standard header with Sign Out |
+| `snippets/membership-gate.js` | Gate logic for non-auth pages |
+| `supabase/schema.sql` | Users table + row level security |
+| `supabase/add-member.sql` | Activate a new member |
+| `pwa/manifest.json` | PWA install manifest |
+| `pwa/sw.js` | Cache-first service worker |
+
 ## Supabase Project
 
 | | |
