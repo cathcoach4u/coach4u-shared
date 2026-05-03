@@ -1,0 +1,116 @@
+<!--
+  ACCOUNT PAGE — coach4u-shared template
+  ========================================
+  Standard account page used across all Coach4U apps.
+
+  Shows: profile (email, name), membership (status, start, end), support contact.
+  Support email is always contact@coach4u.com.au — do not change it.
+
+  After copying into your app:
+  - Replace [App Name] in <title>
+  - Replace [X.Y] with the app version number
+  - Wire up the Supabase query to populate fields (pattern shown in the script below)
+
+  CSS classes required from css/style.css:
+    .site-header, .header-inner, .header-left, .header-back,
+    .header-title, .header-version, .sign-out-btn,
+    .main-content, .account-section, .section-title,
+    .info-card, .info-row, .label, .value, .help-text
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[App Name] — Account</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#003366">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="dashboard.html" class="header-back">← Back</a>
+        <span class="header-title">Account</span>
+      </div>
+      <span class="header-version" id="headerVersion"></span>
+      <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="loading" class="loading">Loading account...</div>
+    <div id="error" class="error" style="display:none;"></div>
+    <div id="content" style="display:none;">
+
+      <section class="account-section">
+        <h2 class="section-title">Profile</h2>
+        <div class="info-card">
+          <div class="info-row"><span class="label">Email</span><span class="value" id="userEmail">—</span></div>
+          <div class="info-row"><span class="label">Name</span><span class="value" id="userName">—</span></div>
+        </div>
+      </section>
+
+      <section class="account-section">
+        <h2 class="section-title">Membership</h2>
+        <div class="info-card">
+          <div class="info-row"><span class="label">Status</span><span class="value" id="membershipStatus">—</span></div>
+          <div class="info-row"><span class="label">Starts</span><span class="value" id="startDate">—</span></div>
+          <div class="info-row"><span class="label">Expires</span><span class="value" id="endDate">—</span></div>
+        </div>
+      </section>
+
+      <section class="account-section">
+        <h2 class="section-title">Support</h2>
+        <p class="help-text">Need help? Reach out at <a href="mailto:contact@coach4u.com.au">contact@coach4u.com.au</a></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const SUPABASE_URL = 'https://eekefsuaefgpqmjdyniy.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y';
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function showError(msg) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('error').style.display = 'block';
+      document.getElementById('error').textContent = msg;
+    }
+
+    function formatDate(d) {
+      return new Date(d).toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    window.signOut = async function() { await sb.auth.signOut(); window.location.href = 'index.html'; };
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const { data: { user }, error: authErr } = await sb.auth.getUser();
+        if (authErr || !user) { window.location.href = 'index.html'; return; }
+
+        const { data: userData } = await sb.from('users').select('*').eq('id', user.id).single();
+        if (userData?.membership_status !== 'active') { window.location.href = 'inactive.html'; return; }
+
+        document.getElementById('userEmail').textContent = user.email || '—';
+        document.getElementById('userName').textContent = userData?.name || '—';
+        document.getElementById('membershipStatus').textContent = userData?.membership_status || '—';
+        document.getElementById('startDate').textContent = userData?.membership_start_date ? formatDate(userData.membership_start_date) : '—';
+        document.getElementById('endDate').textContent = userData?.membership_end_date ? formatDate(userData.membership_end_date) : '—';
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+      } catch (err) {
+        showError('Error loading account. Please refresh.');
+      }
+    });
+
+    document.getElementById('headerVersion').textContent =
+      'v[X.Y] — ' + new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+  </script>
+</body>
+</html>
