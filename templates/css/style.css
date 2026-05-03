@@ -1,6 +1,6 @@
 /* ============================================
    Coach4U Shared Design System — css/style.css
-   Version: 2.0
+   Version: 2.1
    Changelog:
      1.0 - Initial shared design system
      1.1 - Added login page pattern (.login-page, .login-card etc)
@@ -10,6 +10,8 @@
      2.0 - Adopted dashboard design as standard
            (Aptos system stack, navy #003366, teal #0D9488,
            white background, teal-bordered cards)
+     2.1 - Added app card grid pattern (.app-grid, .app-card etc)
+           Standard portal dashboard layout for all Coach4U apps.
    ============================================ */
 
 /*
@@ -55,8 +57,7 @@
 /*
   IMPORTANT: Do NOT add display:flex or flex-direction:column to body.
   Auth pages (login, forgot-password, reset-password) use their own
-  body layout to centre the card. Adding flex-direction:column here
-  will break those pages. Each app adds its own layout styles as needed.
+  body layout to centre the card.
 */
 body {
   font-family: var(--font-body);
@@ -78,31 +79,20 @@ a:hover { color: var(--accent-dark); text-decoration: underline; }
 img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; border: none; }
 
-/* ----- Login Page (shared pattern) ----- */
+/* ----- Login Page ----- */
 .login-page {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
 }
-
 .login-card {
-  background: white;
-  border-radius: 12px;
-  padding: 32px 24px;
-  max-width: 380px;
-  width: 100%;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  background: white; border-radius: 12px; padding: 32px 24px;
+  max-width: 380px; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-
 .login-logo { text-align: center; margin-bottom: 20px; }
 .login-logo h1 { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
-
 .login-title { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
 .login-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-
 .login-btn {
   width: 100%; padding: 12px 20px; background: var(--primary); color: white;
   border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600;
@@ -110,31 +100,19 @@ button { font-family: inherit; cursor: pointer; border: none; }
 }
 .login-btn:hover { background: var(--primary-dark); }
 .login-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
 .login-forgot { display: block; text-align: center; margin-top: 14px; font-size: 13px; color: var(--accent); font-weight: 500; }
 .login-forgot:hover { color: var(--accent-dark); text-decoration: underline; }
-
 .login-message { margin-top: 12px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; display: none; }
 .login-message.success { background: #D4EDDA; color: #155724; }
 .login-message.error   { background: #F8D7DA; color: #721C24; }
-
 .password-wrapper { position: relative; }
 .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px; padding: 4px; }
 .toggle-password:hover { color: var(--accent); }
 
-/* ----- Header + Sign Out (standard pattern) ----- */
+/* ----- Header ----- */
 /*
-  Standard header structure for all app pages (not auth pages):
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="header-left">
-        <a href="index.html" class="header-back">← Back</a>  <!-- omit on dashboard -->
-        <span class="header-title">Page Name</span>
-      </div>
-      <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
-    </div>
-  </header>
   Sign Out is ALWAYS top-right of the header across all apps.
+  header-inner must NEVER use flex-direction:column.
 */
 .site-header {
   background: var(--primary); color: white; padding: 16px 24px;
@@ -146,6 +124,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .header-title { font-size: 24px; font-weight: 700; color: white; letter-spacing: -0.5px; }
 .header-back { color: rgba(255,255,255,0.7); font-size: 13px; transition: color 0.2s; }
 .header-back:hover { color: white; text-decoration: none; }
+.header-version { font-size: 12px; color: rgba(255,255,255,0.55); }
 .sign-out-btn {
   background: rgba(255,255,255,0.15); color: white; padding: 5px 10px;
   border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
@@ -159,10 +138,6 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .page-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
 
 /* ----- Section Headings ----- */
-/*
-  Standard collapsible section heading pattern (optional JS toggle):
-  <div class="section-heading">Section Title</div>
-*/
 .section-heading {
   font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
   color: var(--primary); margin: 32px 0 12px; padding-bottom: 6px;
@@ -171,10 +146,6 @@ button { font-family: inherit; cursor: pointer; border: none; }
 }
 
 /* ----- Cards ----- */
-/*
-  Standard card — teal border, teal shadow, hover lift.
-  Use .card-neutral for structural/admin UI where teal border is too strong.
-*/
 .card {
   background: var(--surface); border-radius: var(--radius); padding: 16px;
   border: 2px solid var(--accent);
@@ -182,33 +153,99 @@ button { font-family: inherit; cursor: pointer; border: none; }
   transition: box-shadow 0.3s, transform 0.3s;
 }
 .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
 .card h2, .card h3 { color: var(--primary); margin-bottom: 8px; font-size: 16px; font-weight: 600; }
 .card p { color: var(--text-muted); font-size: 13px; }
 
-/* Neutral card variant — for admin panels and structural UI */
 .card-neutral {
   background: var(--surface); border-radius: var(--radius);
-  padding: 16px; box-shadow: var(--shadow-neutral);
-  border: 1px solid var(--border);
+  padding: 16px; box-shadow: var(--shadow-neutral); border: 1px solid var(--border);
 }
 
-.detail-card { background: var(--surface); border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--accent); box-shadow: var(--shadow-neutral); margin-bottom: 16px; }
-.detail-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
-.detail-card .value { font-size: 16px; font-weight: 600; color: var(--primary); }
-
-/* ----- About / Gradient Panel ----- */
+/* ----- App Card Grid (portal dashboard pattern) ----- */
 /*
-  Used as the top-of-page summary panel on dashboards.
-  <div class="about-panel">
-    <div class="about-panel-title">App Name <span class="about-version">v1.0</span></div>
-    <div class="about-panel-desc">One-paragraph description.</div>
-    <div class="about-panel-tags">
-      <a class="about-panel-tag" href="..." target="_blank">Tag label</a>
+  Standard 2-column card grid for all Coach4U app dashboards.
+  See templates/snippets/app-dashboard.html for full usage example.
+
+  Usage:
+    <div class="app-section-header">
+      <span class="app-section-title">Your Tools</span>
+      <span class="app-section-count">3 available</span>
     </div>
-  </div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-card-icon">[emoji]</div>
+        <div class="app-card-title">Tool Name</div>
+        <div class="app-card-desc">Description</div>
+        <a href="page.html" class="btn btn-primary">Open</a>
+      </div>
+    </div>
 */
+.app-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+}
+.app-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--primary);
+}
+.app-section-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.app-card {
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.app-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.app-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(13,148,136,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+.app-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.3;
+}
+.app-card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* ----- About Panel ----- */
 .about-panel {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: var(--radius); padding: 20px 24px; margin-bottom: 32px;
@@ -226,13 +263,26 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .about-panel-tag {
   font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.3); border-radius: 20px;
-  padding: 4px 12px; color: white; cursor: pointer; display: inline-block;
-  transition: background 0.2s, border-color 0.2s; text-decoration: none;
+  padding: 4px 12px; color: white; display: inline-block;
+  transition: background 0.2s; text-decoration: none;
 }
-.about-panel-tag:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.6); color: white; text-decoration: none; }
+.about-panel-tag:hover { background: rgba(255,255,255,0.3); color: white; text-decoration: none; }
+
+/* ----- Membership Card ----- */
+.membership-card {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white; border-radius: var(--radius); padding: 20px 24px;
+  box-shadow: var(--shadow-lg); margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.membership-card::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+.membership-card .member-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.membership-card .member-email { font-size: 13px; opacity: 0.9; margin-bottom: 14px; }
+.membership-badge { display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.membership-expires { font-size: 12px; opacity: 0.7; margin-top: 10px; }
 
 /* ----- Buttons ----- */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; text-decoration: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s; text-decoration: none; }
 .btn-primary { background: var(--accent); color: white; }
 .btn-primary:hover { background: var(--accent-dark); color: white; text-decoration: none; }
 .btn-navy { background: var(--primary); color: white; }
@@ -259,7 +309,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .form-group textarea:focus { outline: none; border-color: var(--accent); }
 .form-group textarea { min-height: 100px; resize: vertical; }
 
-/* ----- Alerts & Messages ----- */
+/* ----- Alerts ----- */
 .alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; }
 .alert-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
@@ -267,44 +317,15 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .error-msg   { color: #c62828; font-size: 13px; margin-top: 12px; text-align: center; }
 .success-msg { color: var(--accent); font-size: 13px; margin-top: 10px; font-weight: 500; }
 
-/* ----- Pulse Grid ----- */
-.pulse-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
-.pulse-item { background: var(--surface); border-radius: var(--radius); padding: 20px 16px; text-align: center; box-shadow: var(--shadow-neutral); border-top: 4px solid var(--accent); transition: transform 0.2s; }
-.pulse-item:hover { transform: translateY(-2px); }
-.pulse-item.capacity  { border-top-color: var(--capacity); }
-.pulse-item.wellbeing { border-top-color: var(--wellbeing); }
-.pulse-item.strengths { border-top-color: var(--strengths); }
-.pulse-item.execution { border-top-color: var(--execution); }
-.pulse-item .pillar-name { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
-.pulse-item .score { font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
-.pulse-item .score-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-
-/* ----- Membership Card ----- */
-.membership-card {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: white; border-radius: var(--radius); padding: 20px 24px;
-  box-shadow: var(--shadow-lg); margin-bottom: 24px;
-  position: relative; overflow: hidden;
-}
-.membership-card::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.06); border-radius: 50%; }
-.membership-card .member-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-.membership-card .member-email { font-size: 13px; opacity: 0.9; margin-bottom: 14px; }
-
 /* ----- Badges ----- */
 .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-.membership-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
-.badge-active,   .membership-badge.badge-active   { background: #e6f4f1; color: var(--accent); }
-.badge-inactive, .membership-badge.badge-inactive { background: #fce8e8; color: #c62828; }
+.badge-active   { background: #e6f4f1; color: var(--accent); }
+.badge-inactive { background: #fce8e8; color: #c62828; }
 .badge-pending  { background: #fef3c7; color: #92400e; }
-.badge-none,     .membership-badge.badge-none     { background: #f0f0f0; color: #999; }
-.badge-repo { background: var(--primary); color: white; }
-.badge-app  { background: #e6f4f1; color: var(--accent); }
 
-/* ----- Card Type Badge ----- */
-.card-type-badge {
-  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.6px; padding: 2px 7px; border-radius: 20px; margin-bottom: 8px; width: fit-content;
-}
+/* ----- Spinner ----- */
+.spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ----- Resources ----- */
 .resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
@@ -315,9 +336,6 @@ button { font-family: inherit; cursor: pointer; border: none; }
   transition: box-shadow 0.2s, transform 0.2s;
 }
 .resource-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.resource-item .resource-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
-.resource-item h3 { font-size: 16px; color: var(--primary); margin: 0; font-weight: 600; }
-.resource-item p { font-size: 13px; color: var(--text-muted); flex: 1; }
 
 /* ----- Account ----- */
 .account-section { margin-bottom: 32px; }
@@ -326,23 +344,22 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .account-row .key { color: var(--text-muted); font-weight: 500; }
 .account-row .val { color: var(--text); font-weight: 600; }
 
-/* ----- Spinner ----- */
-.spinner { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
 /* ----- Responsive ----- */
 @media (max-width: 640px) {
   .container { padding: 20px 16px; }
-  .pulse-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .card-grid, .resources-grid { grid-template-columns: 1fr; }
   .site-header { padding: 12px 16px; }
   .header-title { font-size: 17px; }
-  .btn { font-size: 13px; padding: 8px 12px; }
+  .header-version { display: none; }
+  .btn { font-size: 13px; padding: 8px 14px; }
   .membership-card { padding: 18px 16px; }
   .login-card { padding: 28px 18px; }
 }
 
+@media (max-width: 480px) {
+  .app-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 400px) {
-  .pulse-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .pulse-item .score { font-size: 1.8rem; }
+  .app-card { padding: 16px; }
 }

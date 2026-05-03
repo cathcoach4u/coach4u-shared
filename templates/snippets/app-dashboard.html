@@ -1,0 +1,75 @@
+<!--
+  App Dashboard Card Grid — coach4u-shared template snippet
+  ============================================================
+  Standard portal dashboard pattern used across all Coach4U apps.
+  Copy this pattern into any app's dashboard page.
+
+  Structure:
+    - Membership card (gradient hero) at top
+    - "Your Tools" section header with count
+    - 2-column .app-grid of .app-card tiles
+    - Each card: icon + title + description + teal Open button
+
+  CSS classes required from templates/css/style.css:
+    .membership-card, .app-section-header, .app-section-title,
+    .app-section-count, .app-grid, .app-card, .app-card-icon,
+    .app-card-title, .app-card-desc, .btn, .btn-primary
+-->
+
+<!-- Membership Card -->
+<div class="membership-card">
+  <div class="member-name" id="memberName">—</div>
+  <div class="member-email" id="memberEmail">—</div>
+  <span class="membership-badge">Active Member</span>
+  <div class="membership-expires">Expires: <span id="expiryDate">—</span></div>
+</div>
+
+<!-- Tools Section -->
+<div class="app-section-header">
+  <span class="app-section-title">Your Tools</span>
+  <span class="app-section-count">[N] available</span>
+</div>
+
+<div class="app-grid">
+
+  <!-- Repeat this block for each tool/feature -->
+  <div class="app-card">
+    <div class="app-card-icon">[emoji]</div>
+    <div class="app-card-title">[Tool Name]</div>
+    <div class="app-card-desc">[One-line description of what this tool does]</div>
+    <a href="[page].html" class="btn btn-primary">Open</a>
+  </div>
+
+  <!-- Example: Brain Pulse -->
+  <div class="app-card">
+    <div class="app-card-icon">🧠</div>
+    <div class="app-card-title">Brain Pulse</div>
+    <div class="app-card-desc">Check in with your four wellbeing pillars</div>
+    <a href="brain-pulse.html" class="btn btn-primary">Open</a>
+  </div>
+
+  <!-- Example: Resources -->
+  <div class="app-card">
+    <div class="app-card-icon">📚</div>
+    <div class="app-card-title">Resources</div>
+    <div class="app-card-desc">Coaching tools and materials</div>
+    <a href="resources.html" class="btn btn-primary">Open</a>
+  </div>
+
+  <!-- Example: Account -->
+  <div class="app-card">
+    <div class="app-card-icon">⚙️</div>
+    <div class="app-card-title">Account</div>
+    <div class="app-card-desc">Your profile and membership details</div>
+    <a href="account.html" class="btn btn-primary">Open</a>
+  </div>
+
+</div>
+<!--
+  Notes:
+  - .app-grid is 2 columns on tablet+, 1 column on mobile (<480px)
+  - Icon background is rgba(13,148,136,0.1) — teal tint. Keep icons as emoji.
+  - Description can be updated dynamically (e.g. show last score from Supabase)
+  - Always use .btn.btn-primary for the Open button (teal)
+  - Add as many cards as needed — odd numbers are fine (last card spans if 1-col)
+-->
