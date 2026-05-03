@@ -1,16 +1,27 @@
-# Coach4U Shared Design System — Claude Code Guide
+# Coach4U Shared — Claude Code Guide
 
-> Template: https://github.com/cathcoach4u/coach4u-shared/blob/main/templates/CLAUDE.md
-> Shared design system: https://github.com/cathcoach4u/coach4u-shared
-> Full setup guide: https://github.com/cathcoach4u/coach4u-shared/blob/main/SETUP.md
+> ## CLAUDE.md is the source of truth.
+> Read this file first in every session. All rules, brand standards, and template
+> references live here or are linked from here. Do not invent patterns, copy
+> from other apps, or guess. If a rule isn't here, ask.
 
-## Shared Stylesheet
+---
 
-Add to every HTML page `<head>`:
+## Workflow Rules
 
-```html
-<link rel="stylesheet" href="https://cathcoach4u.github.io/coach4u-shared/css/style.css">
-```
+- **Commit every change.** One change = one commit + push. No batched commits.
+- **Always push to the working branch immediately** after each commit.
+- **When work is complete, merge to `main`.** The `main` branch should always reflect the finished, current state of the templates.
+- **At session start, confirm `main` is up to date** before doing new work. If a branch is unmerged, finish or merge it first.
+- **Never leave uncommitted changes at end of session.**
+
+## How This Repo Works
+
+- `templates/` — everything to copy into an app repo (CSS, auth pages, SQL, PWA, snippets)
+- `templates/PROFILE.md` — Cath's profile and working preferences
+- `templates/CLAUDE.md` — the guide that gets copied into each app repo
+- `SETUP.md` — canonical reference for auth, membership gating, PWA, and SQL patterns
+- This repo has no auth, no live pages, and no Supabase queries
 
 ## Supabase Project
 
@@ -20,6 +31,8 @@ Add to every HTML page `<head>`:
 | Anon Key | `sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y` |
 
 ## Critical Rules
+
+**Do not link to this repo's files as a live CDN.** Copy `templates/css/style.css` into each app repo. Each app owns its own local copy.
 
 **Supabase init — always inline.** GitHub Pages does not reliably load external `.js` modules. Always initialise Supabase inline in a `<script type="module">` block. Never import from an external config file.
 
@@ -41,19 +54,3 @@ SELECT id, email, 'active'
 FROM auth.users
 WHERE LOWER(email) = LOWER('email@here.com');
 ```
-
----
-## App-Specific Notes
-
-This repo **is** the shared design system — it is the source of truth, not a consumer of it.
-
-- `css/style.css` — shared stylesheet consumed by all Coach4U apps via GitHub Pages CDN
-- `js/config.js` — Supabase URL + anon key exports (reference only; apps must still init inline)
-- `SETUP.md` — canonical setup guide for auth, membership gating, PWA, and SQL patterns
-- `templates/CLAUDE.md` — the master CLAUDE.md template; copy into each app repo and fill in the app-specific section
-
-**GitHub Pages URL:** `https://cathcoach4u.github.io/coach4u-shared/`
-
-Changes to `css/style.css` are live across all apps within ~60 seconds of merge (GitHub Pages rebuild).
-
-This repo has no auth, no Supabase queries, and no HTML pages — it is purely static assets and documentation.
