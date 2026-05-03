@@ -1,12 +1,25 @@
 # Coach4U Shared — Claude Code Guide
 
-> This repo is the source of truth for all Coach4U templates.
-> Templates live in `templates/`. Copy them into app repos as needed.
-> Full setup guide: `SETUP.md`
+> ## CLAUDE.md is the source of truth.
+> Read this file first in every session. All rules, brand standards, and template
+> references live here or are linked from here. Do not invent patterns, copy
+> from other apps, or guess. If a rule isn't here, ask.
+
+---
+
+## Workflow Rules
+
+- **Commit every change.** One change = one commit + push. No batched commits.
+- **Always push to the working branch immediately** after each commit.
+- **When work is complete, merge to `main`.** The `main` branch should always reflect the finished, current state of the templates.
+- **At session start, confirm `main` is up to date** before doing new work. If a branch is unmerged, finish or merge it first.
+- **Never leave uncommitted changes at end of session.**
 
 ## How This Repo Works
 
 - `templates/` — everything to copy into an app repo (CSS, auth pages, SQL, PWA, snippets)
+- `templates/PROFILE.md` — Cath's profile and working preferences
+- `templates/CLAUDE.md` — the guide that gets copied into each app repo
 - `SETUP.md` — canonical reference for auth, membership gating, PWA, and SQL patterns
 - This repo has no auth, no live pages, and no Supabase queries
 
