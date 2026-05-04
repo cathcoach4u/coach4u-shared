@@ -5,6 +5,10 @@
 > references live here or are linked from here. Do not invent patterns, copy
 > from other apps, or guess. If a rule isn't here, ask.
 
+## Build Process
+
+When told to "go to step X", read `PROMPTS.md` in this repo, find that step, and execute the prompt exactly as written. Do not skip steps or combine them unless told to.
+
 ---
 
 ## Workflow Rules
