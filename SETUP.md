@@ -40,9 +40,36 @@ Replace `[App Name]` in each file with your app's name. Each page already has Su
 
 ### 4. Add a member
 
-Once a user has signed up via the login page (or you've created them in Supabase Auth > Users), run `templates/supabase/add-member.sql` after replacing the email address. This sets `membership_status = 'active'`.
+Members are added and invited via the Coach4U Admin Panel (`coach4Uapp-dashboard/admin.html`). The admin invite flow:
 
-### 5. Build your authenticated pages
+1. Sends a Supabase invite email to the user
+2. Stores the member’s full name in `user_metadata.name` in Supabase Auth
+3. Creates a row in `public.users` with `membership_status = 'active'`
+
+If you need to activate a member manually (outside the admin panel), run `templates/supabase/add-member.sql` after replacing the email address.
+
+If the INSERT fails with a duplicate key error, the row already exists — run an UPDATE instead:
+```sql
+UPDATE public.users SET membership_status = 'active'
+WHERE LOWER(email) = LOWER('email@here.com');
+```
+
+### 5. Displaying the member’s name
+
+The admin invite flow stores the member’s name in `user_metadata.name` (Supabase Auth), not necessarily in `public.users`. Always use this priority order when displaying the member’s name on the dashboard:
+
+```js
+const { data: { user } } = await supabase.auth.getUser();
+const { data: profile } = await supabase.from('users').select('name, email, membership_status').eq('id', user.id).single();
+
+const displayName = profile.name || user.user_metadata?.name || user.email;
+```
+
+- `profile.name` — set by the app or admin if it writes to `public.users`
+- `user.user_metadata.name` — always set by the admin invite flow
+- `user.email` — last resort fallback only
+
+### 6. Build your authenticated pages
 
 For every page that requires an active member:
 
@@ -50,7 +77,7 @@ For every page that requires an active member:
 - Paste `templates/snippets/membership-gate.js` at the top of your script logic, inside the same module block.
 - Use `templates/snippets/header-signout.html` for the standard header with Sign Out.
 
-### 6. PWA (optional)
+### 7. PWA (optional)
 
 Copy `templates/pwa/manifest.json` and `templates/pwa/sw.js` into the root of your app. Update placeholders. Link the manifest and register the service worker (instructions are inside `sw.js`).
 
@@ -74,8 +101,12 @@ Copy `templates/pwa/manifest.json` and `templates/pwa/sw.js` into the root of yo
 
 ## Troubleshooting
 
-**Login redirects but the next page bounces back.** Membership gate is firing because `users.membership_status` is not `'active'`. Run `add-member.sql` for that user.
+**Login redirects but the next page bounces back.** Membership gate is firing because `users.membership_status` is not `'active'`. Run `add-member.sql` for that user, or use the UPDATE if the row already exists.
 
-**Reset password email link lands on a 404 or "no session".** The `redirectTo` URL was built with `window.location.origin` instead of `window.location.href`. Check your `forgot-password.html`.
+**Dashboard shows email instead of member name.** The name isn’t in `public.users.name`. Use `user.user_metadata?.name` as a fallback — the admin invite flow always sets this. See step 5 above.
+
+**GitHub Pages shows old version after a push.** Pages takes ~60 seconds to deploy. Hard refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) after waiting. If still stale, try an incognito window.
+
+**Reset password email link lands on a 404 or “no session”.** The `redirectTo` URL was built with `window.location.origin` instead of `window.location.href`. Check your `forgot-password.html`.
 
 **Service worker is caching stale files.** Bump the `CACHE` constant in `sw.js` (e.g. `appname-v1` → `appname-v2`) and redeploy. The activate handler will clean up the old cache.
