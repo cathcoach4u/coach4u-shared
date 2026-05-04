@@ -40,12 +40,27 @@ After Step 1 is complete and `CLAUDE.md` is in the new repo, you can just say **
 >
 > Do not link to the shared repo as a CDN. Every CSS file must be a local copy in this repo.
 >
+> **Enable GitHub Pages** before testing anything:
+> 1. Go to the repo on GitHub → Settings → Pages
+> 2. Set Source to the `main` branch, root folder, and save
+> 3. Wait ~60 seconds for the first deploy before opening any page
+> 4. GitHub Pages takes ~60 seconds to update after every push. If a change isn’t showing, wait and hard refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) rather than assuming something is broken
+>
 > Before building anything:
-> 1. Check whether the Supabase schema has already been run. If it hasn't, show me the exact SQL to run and walk me through where to run it in the Supabase dashboard step by step.
+> 1. Check whether the Supabase schema has already been run. If it hasn’t, show me the exact SQL to run and walk me through where to run it in the Supabase dashboard step by step.
+>
+> **Adding a member to `public.users`:**
+> - Try the INSERT from `add-member.sql` first
+> - If it fails with a duplicate key error, the row already exists — run an UPDATE instead:
+>   ```sql
+>   UPDATE public.users SET membership_status = 'active'
+>   WHERE LOWER(email) = LOWER('email@here.com');
+>   ```
+> - If the UPDATE says "0 rows affected", run `SELECT id, email, membership_status FROM public.users;` to see what’s actually in the table and fix accordingly
 >
 > Then build in this order:
 > 1. Auth flow — login, forgot password, reset password, inactive page
-> 2. At each stage, tell me what to test and how to confirm it's working before moving on
+> 2. At each stage, tell me what to test and how to confirm it’s working before moving on
 > 3. Once auth is confirmed working, build the dashboard with membership gating
 >
 > Follow all rules in `CLAUDE.md` — especially inline Supabase init, membership gating on every protected page, and the reset password redirect rule. Always ask which page type is being built before choosing a stylesheet.
