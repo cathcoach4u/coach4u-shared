@@ -3,6 +3,14 @@
 Read this file to find the prompt for each step of building a new app.
 Each step is self-contained. Tell Claude "go to step X" and it will use the prompt below.
 
+## How to Start a Brand New App
+
+Use this exact opening message in the new repo session:
+
+> This repo is new. Read `PROMPTS.md` in the shared repo (`cathcoach4u/coach4u-shared`) and go to Step 1.
+
+After Step 1 is complete and `CLAUDE.md` is in the new repo, you can just say **"go to step 2"** and Claude will know what to do.
+
 ---
 
 ## Step 1 — Set Up a New App Repo
