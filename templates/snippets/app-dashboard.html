@@ -14,6 +14,43 @@
     .membership-card, .app-section-header, .app-section-title,
     .app-section-count, .app-grid, .app-card, .app-card-icon,
     .app-card-title, .app-card-desc, .btn, .btn-primary
+
+  JS PATTERN — use this in your <script type="module"> block:
+  ============================================================
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const SUPABASE_URL      = 'https://eekefsuaefgpqmjdyniy.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_pcXHwQVMpvEojb4K3afEMw_RMvgZM-Y';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Use getUser() for a fresh server-side token verification
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (!user || userError) {
+    window.location.href = 'auth/login.html';
+    throw new Error('No user');
+  }
+
+  const { data: profile } = await supabase
+    .from('users')
+    .select('membership_status, name, email')
+    .eq('id', user.id)
+    .single();
+
+  if (!profile || profile.membership_status !== 'active') {
+    window.location.href = 'auth/inactive.html';
+    throw new Error('Membership inactive');
+  }
+
+  // Name priority: public.users.name → user_metadata.name (set by admin invite) → email
+  document.getElementById('memberName').textContent = profile.name || user.user_metadata?.name || user.email;
+  document.getElementById('memberEmail').textContent = profile.email || user.email;
+
+  document.getElementById('signOutBtn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    window.location.href = 'auth/login.html';
+  });
+  ============================================================
 -->
 
 <!-- Membership Card -->
@@ -56,7 +93,7 @@
     <a href="resources.html" class="btn btn-primary">Open</a>
   </div>
 
-  <!-- Example: Account -->
+  <!-- Example: Account (required on every dashboard) -->
   <div class="app-card">
     <div class="app-card-icon">⚙️</div>
     <div class="app-card-title">Account</div>
@@ -72,4 +109,7 @@
   - Description can be updated dynamically (e.g. show last score from Supabase)
   - Always use .btn.btn-primary for the Open button (teal)
   - Add as many cards as needed — odd numbers are fine (last card spans if 1-col)
+  - Every dashboard must have an Account card linking to account.html
+  - Redirect paths assume dashboard is at root level (index.html)
+    If in a subfolder, change 'auth/login.html' to '../auth/login.html' etc.
 -->
