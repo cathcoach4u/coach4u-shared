@@ -29,8 +29,8 @@
 |------|---------|
 | `CLAUDE.md` | Drop-in Claude guide for a new app repo |
 | `PROFILE.md` | Cath's profile, brand standards, working preferences |
-| `css/style.css` | Dashboard stylesheet (copy into app as `css/style.css`) |
-| `css/activity.css` | Activity stylesheet — worksheets, tools, multi-step flows |
+| `css/style.css` | Dashboard/auth stylesheet — login, dashboard, account pages |
+| `css/activity.css` | Activity stylesheet — worksheets, exercises, module output pages |
 | `css/info.css` | Info page stylesheet — public read-only informational pages |
 | `auth/login.html` | Sign in page |
 | `auth/forgot-password.html` | Request reset link |
@@ -39,10 +39,24 @@
 | `snippets/supabase-init.html` | Inline Supabase init block |
 | `snippets/header-signout.html` | Standard header with Sign Out |
 | `snippets/membership-gate.js` | Gate logic for non-auth pages |
+| `snippets/app-dashboard.html` | Dashboard page template |
+| `snippets/activity-template.html` | Activity/module page template |
 | `supabase/schema.sql` | Users table + row level security |
 | `supabase/add-member.sql` | Activate a new member |
 | `pwa/manifest.json` | PWA install manifest |
 | `pwa/sw.js` | Cache-first service worker |
+
+## Stylesheet Rules
+
+Always ask which type of page is being built before choosing a stylesheet:
+
+| Page type | Stylesheet |
+|-----------|-----------|
+| Dashboard, login, account | `css/style.css` |
+| Activity, worksheet, exercise, module output | `css/activity.css` |
+| Info (public read-only) | `css/info.css` |
+
+**Never assume `style.css`.** If the page type is not specified, ask before proceeding.
 
 ## Supabase Project
 
