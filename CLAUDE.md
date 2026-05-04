@@ -29,7 +29,9 @@
 |------|---------|
 | `CLAUDE.md` | Drop-in Claude guide for a new app repo |
 | `PROFILE.md` | Cath's profile, brand standards, working preferences |
-| `css/style.css` | Shared stylesheet (copy into app as `css/style.css`) |
+| `css/style.css` | Dashboard stylesheet (copy into app as `css/style.css`) |
+| `css/activity.css` | Activity stylesheet — worksheets, tools, multi-step flows |
+| `css/info.css` | Info page stylesheet — public read-only informational pages |
 | `auth/login.html` | Sign in page |
 | `auth/forgot-password.html` | Request reset link |
 | `auth/reset-password.html` | Set new password |
