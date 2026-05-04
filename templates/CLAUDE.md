@@ -63,15 +63,16 @@ If only this repo is open, follow the rules and patterns documented in this file
 ## What to copy from `coach4u-shared/templates/`
 
 | Need | Copy this |
-|------|----------|
+|------|-----------|
 | Dashboard stylesheet | `css/style.css` → into this repo as `css/style.css` |
-| **Activity stylesheet** | **`css/activity.css` → into this repo as `css/activity.css`** |
+| Activity stylesheet | `css/activity.css` → into this repo as `css/activity.css` |
+| **Info page stylesheet** | **`css/info.css` → into this repo as `css/info.css`** |
 | Sign in page | `auth/login.html` |
 | Forgot password page | `auth/forgot-password.html` |
 | Reset password page | `auth/reset-password.html` |
 | Membership inactive page | `auth/inactive.html` |
-| **App dashboard** | `snippets/app-dashboard.html` |
-| **Activity / tool page** | **`snippets/activity-template.html`** |
+| App dashboard | `snippets/app-dashboard.html` |
+| Activity / tool page | `snippets/activity-template.html` |
 | Inline Supabase init block | `snippets/supabase-init.html` |
 | Header with Sign Out button | `snippets/header-signout.html` |
 | Membership gate logic | `snippets/membership-gate.js` |
@@ -270,6 +271,96 @@ Unlike dashboard pages, activity pages **cannot use the Aptos system stack** —
 - For public activities, use only `activity.css` (no `style.css` needed unless using `.btn` etc.)
 - Primary button is dark-blue fill (`.act-btn-primary`), not teal
 - Background is white (`--act-bg`), not `#f5f7fa`
+
+---
+
+## Info / Public Page Pattern
+
+**Public, read-only informational pages** — session calendars, coaching flow explanations, hosting guides, programme overviews — use a third design system distinct from both the dashboard and activity patterns.
+
+Copy `css/info.css` from the shared repo. Pair it with `css/style.css` — `info.css` handles the page chrome (hero, content well, footer) while `style.css` provides shared components (`.card`, `.btn`, `.section-title`).
+
+### When to use the info pattern
+
+- Page is publicly accessible (no auth required, no sign-out button)
+- Content is read-only and static (no user inputs, no saves to Supabase)
+- Page explains or displays programme information
+
+Do NOT use for auth pages (use the login-card pattern) or activity pages (use `activity.css`).
+
+### Structure (in order)
+
+1. `body class="info-page"` — activates the grey background (`#f0f2f5`)
+2. Link both `css/style.css` AND `css/info.css`
+3. `div.info-hero` — full-width navy-to-teal gradient banner
+4. `div.info-content` — 560px centred content well
+5. Content using `.card`, `.section-title`, `.btn` from `style.css`
+6. `p.info-note` — teal left-strip callout for notes and caveats
+7. `p.info-footer` inside `.info-content` — sticky-to-bottom centred footer
+
+### CSS class reference
+
+```
+.info-hero           — full-width navy-to-teal gradient banner
+.info-hero-logo      — app name, bold 28px
+.info-hero-title     — page title, 20px
+.info-hero-desc      — subtitle (max 480px, 0.88 opacity)
+.info-content        — 560px centred content well
+.info-note           — teal left-strip callout block
+.info-footer         — centred muted footer, sticky to bottom
+```
+
+### Minimal example
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[App Name] — [Page Title]</title>
+  <meta name="theme-color" content="#003366">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/info.css">
+</head>
+<body class="info-page">
+
+  <div class="info-hero">
+    <div class="info-hero-logo">[App Name]</div>
+    <div class="info-hero-title">[Page Title]</div>
+    <p class="info-hero-desc">[One or two sentences.]</p>
+  </div>
+
+  <div class="info-content">
+
+    <p class="section-title">Section Heading</p>
+
+    <div class="card" style="padding: 20px; margin-bottom: 16px;">
+      <!-- content -->
+    </div>
+
+    <p class="info-note">Notes or caveats go here.</p>
+
+    <a href="links.html" class="btn btn-navy btn-full" style="margin-top: 28px; padding: 13px 24px;">← Back to Links</a>
+
+    <p class="info-footer">
+      Strengths-Based Coaching and Counselling | <a href="https://coach4u.com.au">coach4u.com.au</a>
+    </p>
+
+  </div>
+
+</body>
+</html>
+```
+
+### Rules
+
+- Always `body class="info-page"` — activates grey background
+- Always link both `style.css` AND `info.css`
+- No JavaScript unless the page has dynamic display logic (e.g. hiding past dates)
+- No Supabase — info pages are static content only
+- No auth chrome — no header, no sign-out button, no membership check
+- Page-specific styles (e.g. rhythm row patterns, session card details) go in an inline `<style>` block, NOT in `info.css`
 
 ---
 
