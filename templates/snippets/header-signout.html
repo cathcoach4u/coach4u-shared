@@ -4,8 +4,8 @@
   Copy this block into every app page (not auth pages).
   Sign Out is always top-right of the header.
 
-  - On the dashboard: remove the "← Back" link.
-  - On all other pages: keep it and update href and the label.
+  - On the dashboard: use the Portal link (← Portal → yourcoachingportal).
+  - On all other pages: replace with ← Back linking to index.html.
   - Update [Page Name] for each page.
 
   Requires: Supabase initialised inline on the same page (see supabase-init.html).
@@ -15,7 +15,9 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="header-left">
-      <a href="index.html" class="header-back">← Back</a>  <!-- remove on dashboard -->
+      <!-- Dashboard: use this Portal link -->
+      <a href="https://cathcoach4u.github.io/yourcoachingportal" class="header-back">← Portal</a>
+      <!-- Other pages: replace above with: <a href="index.html" class="header-back">← Back</a> -->
       <span class="header-title">[Page Name]</span>
     </div>
     <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
